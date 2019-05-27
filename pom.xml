@@ -8,6 +8,7 @@
   <artifactId>magic-pairer</artifactId>
   <version>1.0-SNAPSHOT</version>
 
+  <!--TODO: upgrade to latest spring boot-->
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
