@@ -32,36 +32,37 @@ public class Player {
     private Long gamesWon = 0L;
     private double playerMatchWinPercent = 0d;
     private double playerGameWinPercent = 0d;
+    private double opponentMatchWinPercent = 0d;
+    private double opponentGameWinPercent = 0d;
 
 
-
-//    public int compareTo(Player otherPlayer) {
-//        if (totalMatchPoints > otherPlayer.getTotalMatchPoints()) {
-//            return -1;
-//        } else if (totalMatchPoints < otherPlayer.getTotalMatchPoints()) {
-//            return 1;
-//        }
-//        // go to opponent Match win percent tie breaker
-//        if (getOpponentMatchWinPercent() > otherPlayer.getOpponentMatchWinPercent()) {
-//            return -1;
-//        } else if (getOpponentMatchWinPercent() < otherPlayer.getOpponentMatchWinPercent()) {
-//            return 1;
-//        }
-//        // go to player game win percent tie breaker
-//        if (playerGameWinPercent > otherPlayer.getPlayerGameWinPercent()) {
-//            return -1;
-//        } else if (playerGameWinPercent > otherPlayer.getPlayerGameWinPercent()) {
-//            return 1;
-//        }
-//        // go to opponent game win percent tie breaker
-//        if (getOpponentGameWinPercent() > otherPlayer.getOpponentGameWinPercent()) {
-//            return -1;
-//        } else if (getOpponentGameWinPercent() < otherPlayer.getOpponentGameWinPercent()) {
-//            return 1;
-//        }
-//        // last tiebreaker is a coin flip
-//        return Math.random() < .5 ? 1 : -1;
-//    }
+    public int compareTo(Player otherPlayer) {
+        if (totalMatchPoints > otherPlayer.getTotalMatchPoints()) {
+            return -1;
+        } else if (totalMatchPoints < otherPlayer.getTotalMatchPoints()) {
+            return 1;
+        }
+        // go to opponent Match win percent tie breaker
+        if (getOpponentMatchWinPercent() > otherPlayer.getOpponentMatchWinPercent()) {
+            return -1;
+        } else if (getOpponentMatchWinPercent() < otherPlayer.getOpponentMatchWinPercent()) {
+            return 1;
+        }
+        // go to player game win percent tie breaker
+        if (getPlayerGameWinPercent() > otherPlayer.getPlayerGameWinPercent()) {
+            return -1;
+        } else if (getPlayerGameWinPercent() > otherPlayer.getPlayerGameWinPercent()) {
+            return 1;
+        }
+        // go to opponent game win percent tie breaker
+        if (getOpponentGameWinPercent() > otherPlayer.getOpponentGameWinPercent()) {
+            return -1;
+        } else if (getOpponentGameWinPercent() < otherPlayer.getOpponentGameWinPercent()) {
+            return 1;
+        }
+        // last tiebreaker is a coin flip
+        return Math.random() < .5 ? 1 : -1;
+    }
 
     public Player() {
     }
@@ -156,30 +157,17 @@ public class Player {
         return opponentIds;
     }
 
-//    // TODO: Optimize this!
-//    public double getOpponentMatchWinPercent() {
-//        double opponentsTotalWinPercent = 0d;
-//        int lengthCount = 0;
-//        for (Long opponentId : opponentIds) {
-//            Player opponent = playerRepository.findOne(opponentId);
-//            opponentsTotalWinPercent += opponent.getPlayerMatchWinPercent();
-//            lengthCount += 1;
-//        }
-//        double opponentMatchWinPercent = opponentsTotalWinPercent / lengthCount;
-//        return opponentMatchWinPercent < .33d ? .33d : opponentMatchWinPercent; // TODO: eliminate magic number
-//    }
-//
-//    // TODO: Optimize this!
-//    public double getOpponentGameWinPercent() {
-//        double opponentsTotalWinPercent = 0d;
-//        int lengthCount = 0;
-//        for (Long opponentId : opponentIds) {
-//            Player opponent = playerRepository.findOne(opponentId);
-//            opponentsTotalWinPercent += opponent.getPlayerGameWinPercent();
-//            lengthCount += 1;
-//        }
-//        double opponentGameWinPercent = opponentsTotalWinPercent / lengthCount;
-//        return opponentGameWinPercent < .33d ? .33d : opponentGameWinPercent; // TODO: eliminate magic number
-//    }
+    public double getOpponentGameWinPercent() {
+        return opponentGameWinPercent;
+    }
+    public void setOpponentGameWinPercent(double opponentGameWinPercent) {
+        this.opponentGameWinPercent = opponentGameWinPercent;
+    }
+    public double getOpponentMatchWinPercent() {
+        return opponentMatchWinPercent;
+    }
+    public void setOpponentMatchWinPercent(double opponentMatchWinPercent) {
+        this.opponentMatchWinPercent = opponentMatchWinPercent;
+    }
 }
 

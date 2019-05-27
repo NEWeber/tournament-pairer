@@ -47,6 +47,42 @@ public class PlayerController {
         playerRepository.delete(existingPlayer);
         return existingPlayer;
     }
+    @RequestMapping(value = "players/{id}/omw", method = RequestMethod.GET)
+    public double getOmw(@PathVariable Long id) {
+        Player existingPlayer = playerRepository.findOne(id);
+        // TODO: only calculate if the player's OMW is not known (check/update round)
+        // TODO: Optimize this!
+        double opponentsTotalMatchWinPercent = 0d;
+        int lengthCount = 0;
+        for (Long opponentId : existingPlayer.getOpponentIds()) {
+            Player opponent = playerRepository.findOne(opponentId);
+            opponentsTotalMatchWinPercent += opponent.getPlayerMatchWinPercent();
+            lengthCount += 1;
+        }
+        double opponentMatchWinPercent = opponentsTotalMatchWinPercent / lengthCount;
+        double finalReturn = opponentMatchWinPercent < .33d ? .33d : opponentMatchWinPercent; // TODO: eliminate magic number
+        existingPlayer.setOpponentMatchWinPercent(finalReturn); // TODO: also update which round this is from
+        playerRepository.saveAndFlush(existingPlayer);
+        return finalReturn;
+    }
+    @RequestMapping(value = "players/{id}/ogw", method = RequestMethod.GET)
+    public double getOgw(@PathVariable Long id) {
+        Player existingPlayer = playerRepository.findOne(id);
+        // TODO: only calculate if the player's OGW is not known (check/update round)
+        // TODO: Optimize this!
+        double opponentsTotalGameWinPercent = 0d;
+        int lengthCount = 0;
+        for (Long opponentId : existingPlayer.getOpponentIds()) {
+            Player opponent = playerRepository.findOne(opponentId);
+            opponentsTotalGameWinPercent += opponent.getPlayerGameWinPercent();
+            lengthCount += 1;
+        }
+        double opponentGameWinPercent = opponentsTotalGameWinPercent / lengthCount;
+        double finalReturn = opponentGameWinPercent < .33d ? .33d : opponentGameWinPercent; // TODO: eliminate magic number
+        existingPlayer.setOpponentGameWinPercent(finalReturn); // TODO: also update which round this is from
+        playerRepository.saveAndFlush(existingPlayer);
+        return finalReturn;
+    }
     public void addPairOfPlayersMatch(Long matchId, MatchPlayers matchPlayers) {
         addMatchPlayedIn(matchId, matchPlayers.getFirstPlayerId());
         addMatchPlayedIn(matchId, matchPlayers.getSecondPlayerId());
